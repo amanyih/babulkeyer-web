@@ -14,7 +14,7 @@ Group Members
 1. ***Clone*** the repository if you don't have it already (this tends to get more difficult as the project grows and the file size grows)
 2. If you already had the project locally, perform a `git pull` on the main branch
 3. Create and checkout to a new branch from the main. You can use `git checkout -b branch-name`, which is a shorter alternative for `git branch branch-name` followed by `git checkout branch-name`
-4. The branch naming convention should follow the pattern `name.feature-name`. (eg. `nati.login`, `emre.users-form`)
+4. The branch naming convention should follow the pattern `name.feature-name`. (eg. `nati.login`, `merwan.contact`)
 5. If you already have a branch and wish to continue working on it, use ***Rebase*** to bring in changes from the main branch. Use the command `git rebase main` if you are on your branch or `git rebase main branch-name` from anywhere to rebase your branch ***onto*** the main
 6. Pulling from main into your branch (same as merging the main into your branch) could have similar results but using rebase from the main makes a more linear version control history as it basically pretends like whatever you committed on your branch happened ***After*** the changes in the main wheather they actually happend after or before
 7. Once your branch is rebased and upto date, make the changes you wish to make and stage and commit your changes. Make sure to remember if you need to add any files into the `.gitignore` before committing
