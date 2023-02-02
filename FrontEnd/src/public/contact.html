@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="Description"
+            content="official website for Babul-keyer Aid Organisation" />
+
+        <title>Contact us</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="footer.responsive.css" />
+        <link rel="stylesheet" href="navbar.responsive.css" />
+        <link rel="stylesheet" href="contact.responsive.css" />
+    </head>
+    <body>
+        <header class="header">
+            <a href="#">
+                <img
+                    src="/src/images/logo-removebg-preview.png"
+                    alt="A company logo"
+                    class="logo" />
+            </a>
+            <nav class="main-nav">
+                <ul class="main-nav-list">
+                    <li>
+                        <a href="index.html" class="main-nav-link">Home</a>
+                    </li>
+                    <li>
+                        <a href="our-works.html" class="main-nav-link"
+                            >Our Works</a
+                        >
+                    </li>
+                    <li>
+                        <a href="ways-to-help.html" class="main-nav-link"
+                            >Ways to Help</a
+                        >
+                    </li>
+                    <li>
+                        <a href="about.html" class="main-nav-link">About us</a>
+                    </li>
+
+                    <li>
+                        <a href="contact.html" class="main-nav-link">Contact</a>
+                    </li>
+                    <li>
+                        <a href="donate.html" class="main-nav-link donate-btn"
+                            >Donate</a
+                        >
+                    </li>
+                </ul>
+            </nav>
+            <button class="btn-mobile-nav" onclick="handleMenu()">
+                <img
+                    src="/src/images/close-outline.svg"
+                    alt="close button"
+                    class="icon-mobile-nav"
+                    id="close"
+                    name="close-outline" />
+
+                <img
+                    src="/src/images/menu-outline.svg"
+                    alt="menu button"
+                    class="icon-mobile-nav"
+                    id="menu"
+                    name="menu-outline" />
+            </button>
+        </header>
+        <section class="cover-image-container">
+            <img
+                src="/src/images/girl image for hero.jpg"
+                alt="our-works image"
+                class="cover-image" />
+        </section>
+
+        <section class="contact-section">
+            <div class="address-info">
+                <div class="address-info__textual-address">
+                    <p class="section-p contact-p">Call Us:</p>
+                    <a href="tel:+09123456" class="contact-links">+2519123456</a
+                    ><br />
+
+                    <p class="section-p contact-p">Email Us</p>
+                    <a
+                        href="mailto:contact@babulkeyer.com"
+                        class="contact-links"
+                        >contact@babulkeyer.com</a
+                    ><br />
+
+                    <p class="section-p contact-p">Address:</p>
+                    <p
+                        style="
+                            display: inline-block;
+                            font-size: 1.6rem;
+                            color: #333;
+                        ">
+                        Abebe Bekila Stadium, Addis Ababa, Ethiopia
+                    </p>
+                    <br />
+                </div>
+                <div class="address-info__map">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7880.426526204666!2d38.725554430688454!3d9.04430165441225!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x4dc34f5d95ad9e81!2sBabul%20kayer!5e0!3m2!1sen!2set!4v1673859837319!5m2!1sen!2set"
+                        width="500"
+                        height="450"
+                        style="border: 0"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+            <form id="contact-form" action="/">
+                <div class="container">
+                    <h1 class="section-h1 align-center">Contact Us</h1>
+                    <div class="input-control">
+                        <label for="name">Name</label>
+                        <input id="name" name="name" type="text" />
+                        <div class="error" id="error"></div>
+                    </div>
+                    <div class="input-control">
+                        <label for="email">Email</label>
+                        <input id="email" name="email" type="email" />
+                        <div class="error" id="error"></div>
+                    </div>
+                    <div class="input-control">
+                        <label for="address">Address</label>
+                        <input id="address" name="address" type="address" />
+                        <div class="error" id="error"></div>
+                    </div>
+                    <div class="input-control">
+                        <label for="subject">Subject</label>
+                        <input id="subject" name="subject" type="text" />
+                        <div class="error" id="error"></div>
+                    </div>
+                    <div class="input-control">
+                        <label for="statement">Statement</label>
+                        <textarea
+                            name="statement"
+                            id="statement"
+                            cols="32"
+                            rows="10"></textarea>
+                        <div class="error" id="error"></div>
+                    </div>
+                    <button type="submit" class="contact-button">
+                        <p class="section-p">Contact</p>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <footer class="footer">
+            <div class="logo-col">
+                <a href="#">
+                    <img
+                        src="/src/images/logo-removebg-preview.png"
+                        alt="Organisation logo" />
+                </a>
+                <p class="copyright">Copyright &copy; 2023</p>
+            </div>
+
+            <div class="footer-nav">
+                <h3>Links</h3>
+                <ul class="footer-nav-main">
+                    <li>
+                        <a href="index.html" class="footer-nav-links">Home</a>
+                    </li>
+                    <li>
+                        <a href="our-works.html" class="footer-nav-links"
+                            >Our Works</a
+                        >
+                    </li>
+                    <li>
+                        <a href="ways-to-help.html" class="footer-nav-links"
+                            >Ways to Help</a
+                        >
+                    </li>
+                    <li>
+                        <a href="about.html" class="footer-nav-links"
+                            >About us</a
+                        >
+                    </li>
+                    <li>
+                        <a href="contact.html" class="footer-nav-links"
+                            >Contact</a
+                        >
+                    </li>
+                    <li>
+                        <a href="donate.html" class="footer-nav-links"
+                            >Donate</a
+                        >
+                    </li>
+                </ul>
+            </div>
+
+            <div class="address-col">
+                <div class="phone-address">
+                    <h3>Call Us</h3>
+                    <a href="tel:+09123456">+2519123456</a>
+                </div>
+                <div class="email-address">
+                    <h3>Email Us</h3>
+                    <a href="mailto:contact@babulkeyer.com"
+                        >contact@babulkeyer.com</a
+                    >
+                </div>
+            </div>
+
+            <div class="follow-us">
+                <h3>Follow Us</h3>
+                <div class="social-media-icons">
+                    <a
+                        href="https://www.facebook.com/profile.php?id=100068870828773"
+                        ><img
+                            src="/src/images/icons8-facebook-48.png"
+                            alt="A social media logo" /></a
+                    ><a href="https://twitter.com/transvelo"
+                        ><img
+                            src="/src/images/icons8-twitter-48.png"
+                            alt="A social media logo" /></a
+                    ><a
+                        href="https://www.youtube.com/channel/UCKBg_cuRVN45UAHG33-1SrQ"
+                        ><img
+                            src="/src/images/icons8-youtube-48.png  "
+                            alt="A social media logo"
+                    /></a>
+                </div>
+            </div>
+        </footer>
+        <script src="script.js"></script>
+        <script src="donate.script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,52 @@
+@media (max-width: 85em) {
+    .our-works {
+        padding: 3.2rem 6.4rem;
+    }
+    .our-works__items-description {
+        padding: 1rem 2.8rem;
+    }
+}
+/**************************/
+/* BELOW 1200px (Landscape Tablets) */
+/**************************/
+@media (max-width: 75em) {
+    .our-works {
+        padding: 3.2rem 5.4rem;
+        gap: 2rem;
+    }
+    .our-works__items-description {
+        padding: 0.8rem 2.2rem;
+    }
+}
+
+@media (max-width: 68em) {
+    .our-works-container {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 1fr 1fr;
+    }
+    .our-works__items-description {
+        padding: 2.6rem 4.6rem;
+    }
+}
+
+@media (max-width: 50em) {
+    .our-works-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 40em) {
+    .our-works {
+        padding: 2rem;
+    }
+    .our-works-container {
+        padding: 0 2rem 4rem 2rem;
+    }
+}
+
+@media (max-width: 29em) {
+    .our-works {
+        padding: 0;
+    }
+}
