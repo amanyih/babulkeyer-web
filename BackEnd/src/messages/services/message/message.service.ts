@@ -31,7 +31,12 @@ export class MessageService {
     }
   }
   async getMessage(id: string): Promise<IMessage> {
-    const message = await this.messageModel.findById(id);
+    let message: IMessage;
+    try {
+      message = await this.messageModel.findById(id);
+    } catch (err) {
+      throw new NotFoundException('Message Not Found');
+    }
     if (!message) {
       throw new NotFoundException('Message Not Found');
     }
@@ -51,7 +56,12 @@ export class MessageService {
     }
   }
   async getAllMessages(): Promise<IMessage[]> {
-    const messages = await this.messageModel.find();
+    let messages: IMessage[];
+    try {
+      messages = await this.messageModel.find();
+    } catch (err) {
+      throw new NotFoundException('No Message Found');
+    }
     if (!messages || messages.length === 0) {
       throw new NotFoundException('No Message Found');
     } else {
