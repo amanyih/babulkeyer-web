@@ -3,6 +3,10 @@ import { IsString, IsNotEmpty } from 'class-validator';
 export class CreateCardDto {
   @IsNotEmpty()
   @IsString()
+  page: string;
+
+  @IsNotEmpty()
+  @IsString()
   header: string;
 
   @IsNotEmpty()
