@@ -11,11 +11,7 @@ export class MessageController {
   }
   @Get(':id')
   async getMessage(@Param('id') id: string) {
-    try {
-      return await this.messageService.getMessage(id);
-    } catch {
-      return null;
-    }
+    return await this.messageService.getMessage(id);
   }
   @Delete(':id')
   async deleteMessage(@Param('id') id: string) {
