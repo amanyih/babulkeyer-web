@@ -7,6 +7,10 @@ export class CreateCardDto {
 
   @IsNotEmpty()
   @IsString()
+  page: string;
+
+  @IsNotEmpty()
+  @IsString()
   description: string;
 
   @IsNotEmpty()

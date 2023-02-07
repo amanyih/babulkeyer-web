@@ -79,8 +79,8 @@ export class CardService {
 
   async createCard(createCardDto: CreateCardDto): Promise<ICard> {
     try {
-      const cardData = new this.CardModel(createCardDto);
-      return cardData.save();
+      const cardData = await this.CardModel.create(createCardDto);
+      return cardData;
     } catch (err) {
       throw err;
     }
