@@ -42,7 +42,7 @@ export class CardService {
       throw new NotFoundException('Card Data not Found!');
     }
 
-    if (!cardData || cardData.length == 0) {
+    if (!cardData) {
       throw new NotFoundException('Card Data Not Found!');
     }
 
@@ -57,7 +57,7 @@ export class CardService {
       throw new NotFoundException('To be Deleted Card Not Found');
     }
 
-    if (!deletedCardData || deletedCardData.length == 0) {
+    if (!deletedCardData) {
       throw new NotFoundException('Card Data Not Found!');
     }
     return deletedCardData;
@@ -71,7 +71,7 @@ export class CardService {
       throw new NotFoundException('To Be Updated Card Not Found');
     }
 
-    if (!updatedCard || updatedCard.length == 0) {
+    if (!updatedCard) {
       throw new NotFoundException('Card Data Not Found!');
     }
     return await this.getCardById(id);

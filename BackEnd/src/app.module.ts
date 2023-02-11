@@ -6,6 +6,8 @@ import { CardController } from './card-content/controllers/card/card.controller'
 import { MongooseModule } from '@nestjs/mongoose';
 import { DescriptionModule } from './description/description.module';
 import { PartnersModule } from './partners/partners.module';
+import { UsersModule } from './users/users.module';
+import { MessagesModule } from './messages/messages.module';
 @Module({
   imports: [
     CardContentModule,
@@ -15,8 +17,10 @@ import { PartnersModule } from './partners/partners.module';
         dbName: 'BabulKeyerDB',
       },
     ),
+    MessagesModule,
     DescriptionModule,
     PartnersModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
