@@ -24,7 +24,6 @@ export class PartnersService {
     } catch (err) {
       throw new NotFoundException('No partners found');
     }
-    console.log(partnerData);
     if (!partnerData || partnerData.length == 0) {
       throw new NotFoundException('Partner not found!');
     }
