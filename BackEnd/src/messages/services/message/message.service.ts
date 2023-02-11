@@ -51,7 +51,7 @@ export class MessageService {
       } else {
         throw new NotFoundException('Message Not Found');
       }
-    } catch (e) {
+    } catch (err) {
       throw new NotFoundException('Message Not Found');
     }
   }

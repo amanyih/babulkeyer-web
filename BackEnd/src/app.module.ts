@@ -10,7 +10,7 @@ import { PartnersModule } from './partners/partners.module';
   imports: [
     CardContentModule,
     MongooseModule.forRoot(
-      'mongodb+srv://Cluster15688:RWpEeWVYR0Fa@cluster15688.l30kuvi.mongodb.net/?retryWrites=true&w=majority',
+      'mongodb+srv://amanuel:test1234@cluster0.8yo5agg.mongodb.net/?retryWrites=true&w=majority',
       {
         dbName: 'BabulKeyerDB',
       },
