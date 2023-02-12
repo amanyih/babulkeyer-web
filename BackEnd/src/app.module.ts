@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/services/auth/auth.service';
 import { AuthController } from './auth/controllers/auth/auth.controller';
 import { JwtService } from '@nestjs/jwt';
+import { ImageUploadModule } from './image-upload/image-upload.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { JwtService } from '@nestjs/jwt';
     UsersModule,
     CardContentModule,
     AuthModule,
+    ImageUploadModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService, JwtService],
