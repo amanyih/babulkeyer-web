@@ -11,7 +11,8 @@ import {
 import { CardService } from 'src/card-content/services/card/card.service';
 import { CreateCardDto } from 'src/card-content/dtos/create-card.dto';
 import { UpdateCardDto } from 'src/card-content/dtos/update-card.dto';
-import { Patch, Put } from '@nestjs/common/decorators';
+import { Patch, Put, UseGuards } from '@nestjs/common/decorators';
+import { AuthGuard } from '@nestjs/passport';
 @Controller('card')
 export class CardController {
   constructor(private readonly cardService: CardService) {}
@@ -32,17 +33,20 @@ export class CardController {
     return await this.cardService.getCardByPage(page);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   async createCard(@Body() createCardDto: CreateCardDto) {
     console.log('in the controller');
     return await this.cardService.createCard(createCardDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/:id')
   async deleteCard(@Param('id') id: string) {
     return await this.cardService.deleteCard(id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch('/:id')
   async updateCard(
     @Param('id') id: string,

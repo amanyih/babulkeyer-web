@@ -1,6 +1,8 @@
 import { Controller, Post, Body, UseGuards, Get, Req } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
+import { RoleGuard } from 'src/auth/role.guard';
+import { Roles } from 'src/auth/roles.decorator';
 import { AuthService } from 'src/auth/services/auth/auth.service';
 import { createUserDto } from 'src/users/dtos/create-user.dto';
 
@@ -23,6 +25,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('/protected')
+  @Roles('superadmin')
   async protected(@Req() req: Request) {
     return req.user;
   }
