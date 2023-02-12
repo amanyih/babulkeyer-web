@@ -9,9 +9,14 @@ import { PartnersModule } from './partners/partners.module';
 import { UsersModule } from './users/users.module';
 import { MessagesModule } from './messages/messages.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/services/auth/auth.service';
+import { AuthController } from './auth/controllers/auth/auth.controller';
+import { JwtService } from '@nestjs/jwt';
+import { ImageUploadModule } from './image-upload/image-upload.module';
+
 @Module({
   imports: [
-    CardContentModule,
     MongooseModule.forRoot(
       'mongodb+srv://amanuel:test1234@cluster0.8yo5agg.mongodb.net/?retryWrites=true&w=majority',
       {
@@ -26,8 +31,12 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       load: [],
     }),
+
+    CardContentModule,
+    AuthModule,
+    ImageUploadModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, AuthController],
+  providers: [AppService, AuthService, JwtService],
 })
 export class AppModule {}

@@ -14,10 +14,10 @@ import { UsersService } from 'src/users/services/users/users.service';
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
-  @Post()
-  addUser(@Body() user: createUserDto) {
-    return this.userService.addNewUser(user);
-  }
+  // @Post()
+  // addUser(@Body() user: createUserDto) {
+  //   return this.userService.addNewUser(user);
+  // }
   @Get()
   allUsers() {
     return this.userService.getAllUsers();
@@ -30,10 +30,10 @@ export class UsersController {
   getUserById(@Param('id') id: string) {
     return this.userService.getUserById(id);
   }
-  @Patch(':id')
-  updateUser(@Param('id') id: string, @Body() updateuserDto: UpdateUserDto) {
-    return this.userService.updateUser(id, updateuserDto);
-  }
+  // @Patch(':id')
+  // updateUser(@Param('id') id: string, @Body() updateuserDto: UpdateUserDto) {
+  //   return this.userService.updateUser(id, updateuserDto);
+  // }
   @Delete(':id')
   deleteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);
