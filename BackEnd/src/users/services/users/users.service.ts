@@ -34,13 +34,11 @@ export class UsersService {
   async findUserByUserName(userName: string) {
     let user: IUser;
     try {
-      user = await this.userModel.findOne({ userName }, { password: 0 });
+      user = await this.userModel.findOne({ userName });
     } catch (err) {
       throw new NotFoundException('User Not Found');
     }
-    if (!user) {
-      throw new NotFoundException('User Not Found');
-    }
+
     return user;
   }
 
