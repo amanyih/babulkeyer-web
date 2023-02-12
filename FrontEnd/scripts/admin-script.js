@@ -12,6 +12,7 @@ const messages = document.querySelector(".message");
 const testimonials = document.querySelector(".testimonials");
 const users = document.querySelector(".users");
 const namePlaceholder = document.getElementById("username");
+const logout = document.getElementById("logout-btn");
 
 class App {
     show = false;
@@ -28,6 +29,14 @@ class App {
         messages.addEventListener("click", this.rendermessages.bind(this));
 
         users.addEventListener("click", this.renderUser.bind(this));
+        logout.addEventListener("click", this.logoutHandler.bind(this));
+    }
+
+    logoutHandler(e) {
+        localStorage.removeItem("jwtToken");
+        localStorage.removeItem("currentUser");
+
+        window.location.replace("http://127.0.0.1:5502/FrontEnd/log-in.html");
     }
     slideDown(e) {
         if (e.target.closest(".sub-heading")) {
@@ -54,7 +63,14 @@ class App {
             this.selectedElement.classList.remove("active-item-2");
         }
         let resData;
-        const res = await fetch("http://localhost:3000/api/card/page/home");
+        const res = await fetch("http://localhost:3000/api/card/page/home", {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${TOKEN}`,
+            },
+        });
         if (res.status != "404") {
             const resDataSet = await res.json();
             resData = resDataSet[0];
@@ -113,6 +129,7 @@ class App {
                 // credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${TOKEN}`,
                 },
                 body: JSON.stringify(home),
             }
@@ -124,7 +141,14 @@ class App {
     }
 
     async renderpartner_helper() {
-        const res = await fetch("http://localhost:3000/api/partners");
+        const res = await fetch("http://localhost:3000/api/partners", {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${TOKEN}`,
+            },
+        });
         const dataSet = await res.json();
         console.log(dataSet);
         let html;
@@ -236,6 +260,7 @@ class App {
             mode: "cors",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${TOKEN}`,
             },
             body: JSON.stringify(partner),
         });
@@ -262,6 +287,7 @@ class App {
                 mode: "cors",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${TOKEN}`,
                 },
                 body: JSON.stringify(parnter),
             }
@@ -289,6 +315,7 @@ class App {
                 mode: "cors",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${TOKEN}`,
                 },
                 body: JSON.stringify(parnter),
             }
@@ -320,7 +347,14 @@ class App {
 
         this.selectedElement = e.currentTarget;
         let resData;
-        const res = await fetch("http://localhost:3000/api/description");
+        const res = await fetch("http://localhost:3000/api/description", {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${TOKEN}`,
+            },
+        });
         if (res.status != "404") {
             const resDataSet = await res.json();
             resData = resDataSet[0];
@@ -370,6 +404,7 @@ class App {
                 // credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${TOKEN}`,
                 },
                 body: JSON.stringify(work),
             }
@@ -381,7 +416,14 @@ class App {
     }
     async renderworks_helper() {
         console.log("in helper");
-        const res = await fetch("http://localhost:3000/api/card/page/work");
+        const res = await fetch("http://localhost:3000/api/card/page/work", {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${TOKEN}`,
+            },
+        });
         const works = await res.json();
         console.log(works);
 
@@ -459,6 +501,7 @@ class App {
             mode: "cors",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${TOKEN}`,
             },
             body: JSON.stringify(work),
         });
@@ -532,6 +575,7 @@ class App {
             mode: "cors",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${TOKEN}`,
             },
             body: JSON.stringify(work),
         });
@@ -558,6 +602,7 @@ class App {
             mode: "cors",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${TOKEN}`,
             },
             body: JSON.stringify(work),
         });
@@ -593,7 +638,14 @@ class App {
         }
         this.selectedElement = e.currentTarget;
 
-        const response = await fetch("http://127.0.0.1:3000/api/message");
+        const response = await fetch("http://127.0.0.1:3000/api/message", {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${TOKEN}`,
+            },
+        });
         // console.log(response);
         const data = await response.json();
         // console.log(data);
@@ -620,6 +672,23 @@ class App {
     }
 
     async renderUser(e) {
+        const currentUser = await fetch(
+            `http://localhost:3000/api/users/${localStorage.getItem(
+                "currentUserId"
+            )}`,
+            {
+                method: "GET",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${TOKEN}`,
+                },
+            }
+        );
+
+        if (currentUser.adminType === "admin") {
+            return alert("You are Not Authorized");
+        }
         if (this.selectedElement) {
             this.selectedElement.classList.remove("active-item-2");
             this.selectedElement.classList.remove("active-item");
@@ -634,10 +703,26 @@ class App {
 
         try {
             usersPendingData = await fetch(
-                "http://localhost:3000/api/users/status/pending"
+                "http://localhost:3000/api/users/status/pending",
+                {
+                    method: "GET",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${TOKEN}`,
+                    },
+                }
             );
             usersApprovedData = await fetch(
-                "http://localhost:3000/api/users/status/approved"
+                "http://localhost:3000/api/users/status/approved",
+                {
+                    method: "GET",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${TOKEN}`,
+                    },
+                }
             );
         } catch (error) {
             console.log(error);
@@ -789,6 +874,7 @@ class App {
             mode: "cors",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${TOKEN}`,
             },
             body: JSON.stringify(),
         });
@@ -796,10 +882,14 @@ class App {
     }
 }
 
+var TOKEN;
+
 function load() {
     const user = localStorage.getItem("currentUser");
     const jwtToken = localStorage.getItem("jwtToken");
-    console.log(user, jwtToken);
+    const userId = localStorage.getItem("currentUserId");
+    TOKEN = jwtToken;
+    console.log(user, jwtToken, userId);
     if (user && jwtToken) {
         namePlaceholder.innerText = user;
         const app = new App();

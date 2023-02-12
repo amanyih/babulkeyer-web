@@ -33,6 +33,8 @@ async function submitHandler(e) {
 
         localStorage.setItem("currentUser", `${res.name}`);
 
+        localStorage.setItem("currentUserId", res.id);
+
         console.log("storage", localStorage.getItem("jwtToken"));
         return window.location.replace(
             "http://127.0.0.1:5502/FrontEnd/admin-index.html"
