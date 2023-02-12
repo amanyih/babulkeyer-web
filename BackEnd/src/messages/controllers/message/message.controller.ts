@@ -1,4 +1,6 @@
 import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common/decorators';
+import { AuthGuard } from '@nestjs/passport';
 import { MessageDto } from 'src/messages/dtos/message.dto';
 import { MessageService } from 'src/messages/services/message/message.service';
 
@@ -17,6 +19,7 @@ export class MessageController {
   async deleteMessage(@Param('id') id: string) {
     return await this.messageService.deleteMessage(id);
   }
+
   @Get()
   async getAllMessages() {
     return await this.messageService.getAllMessages();
