@@ -5,11 +5,9 @@ const partner = document.querySelector(".partner-link");
 const main = document.querySelector(".main");
 const work = document.querySelector(".work-link");
 const workDescription = document.querySelector(".work-description-link");
-
 const helpDescription = document.querySelector(".help-description");
 const helpSupport = document.querySelector(".help-support");
 const helpInvolved = document.querySelector(".help-involved");
-
 const messages = document.querySelector(".message");
 const testimonials = document.querySelector(".testimonials");
 const users = document.querySelector(".users");
@@ -26,14 +24,8 @@ class App {
       this.renderWorkDescription.bind(this)
     );
     work.addEventListener("click", this.renderworks.bind(this));
-    helpDescription.addEventListener(
-      "click",
-      this.renderWaysDescription.bind(this)
-    );
-    helpSupport.addEventListener("click", this.renderSupports.bind(this));
-    helpInvolved.addEventListener("click", this.renderGetInvolveds.bind(this));
     messages.addEventListener("click", this.rendermessages.bind(this));
-    testimonials.addEventListener("click", this.renderTestimonials.bind(this));
+
     users.addEventListener("click", this.renderUser.bind(this));
   }
   slideDown(e) {
@@ -130,21 +122,15 @@ class App {
     // hero.click();
   }
 
-  async renderPartners(e) {
-    if (this.selectedElement) {
-      this.selectedElement.classList.remove("active-item");
-      this.selectedElement.classList.remove("active-item-2");
-    }
+  async renderpartner_helper() {
     const res = await fetch("http://localhost:3000/api/partners");
     const dataSet = await res.json();
     console.log(dataSet);
-
-    this.selectedElement = e.currentTarget;
     let html;
     html = `
     `;
     dataSet.forEach((data) => {
-      html += `<div class="partner">
+      html += `<div class="partner" data-id="${data._id}">
                <h3 class="partners-name">${data.name}</h3>
                <img class="partners-img" src="${data.image}" width="200px"srcset="">
           </div>`;
@@ -160,27 +146,43 @@ class App {
         <div  class="partner-form-box" >
         <div class="form-card partner-form">
           <h2 class="partner-heading">Add partner</h2>
-        <form action="">
+        <form action="" class="form-partner" data-id="${dataSet._id}">
           <label class="label" for="heading">Partner name</label>
-          <input id="heading" type="text" name="" class="input" required></input>
+          <input id="heading" type="text" name="" class="input parnter-name" required></input>
            <label class="label"  for="imageLink">Partner logo image link</label>
-           <input id="imageLink" type="text" name="" class="input" required></input>
-           <button class="btn btn-fill">Add</button>
+           <input id="imageLink" type="text" name="" class="input partner-img" required></input>
+           <button class="btn btn-fill partner-add">Add</button>
        </form>
       </div>
       </div>
       </div>
+
       
     </div>`;
-
-    this.selectedElement.classList.add("active-item");
+    document
+      .querySelector(".partner-add")
+      .addEventListener("click", this.postPartner);
     document
       .querySelector(".partners-list")
       .addEventListener("click", this.renderpartner.bind(this));
   }
 
+  async renderPartners(e) {
+    if (this.selectedElement) {
+      this.selectedElement.classList.remove("active-item");
+      this.selectedElement.classList.remove("active-item-2");
+    }
+
+    this.selectedElement = e.currentTarget;
+    let html;
+    this.renderpartner_helper();
+    this.selectedElement.classList.add("active-item");
+  }
+
   renderpartner(e) {
     if (e.target.closest(".partner")) {
+      const id = e.target.closest(".partner").dataset.id;
+      console.log(id);
       const partnerName = e.target
         .closest(".partner")
         .querySelector(".partners-name").textContent;
@@ -196,19 +198,95 @@ class App {
       <button class="btn btn-fill btn-add">Add</button>
      </div>
    
-  <form action="">
+  <form action="" class="form-partner" data-id="${id}" >
     <label class="label" for="heading">Partner name</label>
-    <input id="heading" type="text" name="" value = "${partnerName}" class="input" required></input>
+    <input id="heading" type="text" name="" value = "${partnerName}" class="input partner-name" required></input>
      <label class="label"  for="imageLink">Partner logo image link </label>
-     <input id="imageLink" type="text" name="" value = "${partnerimageLink}" class="input" required></input>
-     <button class="btn btn-fill">Edit</button>   <button class="btn btn-fill" style="background-color:orangeRed">Delete</button>
+     <input id="imageLink" type="text" name="" value = "${partnerimageLink}" class="input partner-img" required></input>
+     <button class="btn btn-fill partner-edit">Edit</button>   <button class="btn btn-fill partner-delete" style="background-color:orangeRed">Delete</button>
  </form>
 </div>`;
       partnerForm.innerHTML = html;
       document
         .querySelector(".btn-add")
         .addEventListener("click", this.addPartner.bind(this));
+      document
+        .querySelector(".partner-edit")
+        .addEventListener("click", this.editPartner.bind(this));
+      document
+        .querySelector(".partner-delete")
+        .addEventListener("click", this.deletePartner.bind(this));
     }
+  }
+  async postPartner(e) {
+    e.preventDefault();
+    const name = document.querySelector(".parnter-name");
+
+    const image = document.querySelector(".partner-img");
+    let method;
+
+    const partner = {
+      name: name.value,
+      image: image.value,
+    };
+
+    const response = await fetch(`http://localhost:3000/api/partners`, {
+      method: `POST`,
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(partner),
+    });
+    this.renderworks(e);
+  }
+  async editPartner(e) {
+    e.preventDefault();
+    const name = document.querySelector(".partner-name");
+    const id = name.parentElement.dataset.id;
+    console.log(id);
+    const image = document.querySelector(".partner-img");
+    let method;
+
+    const parnter = {
+      name: name.value,
+      image: image.value,
+    };
+
+    console.log(parnter);
+    const response = await fetch(`http://localhost:3000/api/partners/${id}`, {
+      method: `PATCH`,
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parnter),
+    });
+    this.renderpartner_helper();
+  }
+  async deletePartner(e) {
+    e.preventDefault();
+    const name = document.querySelector(".partner-name");
+    const id = name.parentElement.dataset.id;
+    console.log(id);
+    const image = document.querySelector(".partner-img");
+    let method;
+
+    const parnter = {
+      name: name.value,
+      image: image.value,
+    };
+
+    console.log(parnter);
+    const response = await fetch(`http://localhost:3000/api/partners/${id}`, {
+      method: `DELETE`,
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parnter),
+    });
+    this.renderpartner_helper();
   }
   addPartner() {
     const html = `<div class="form-card partner-form">
@@ -224,7 +302,7 @@ class App {
     const partnerForm = document.querySelector(".partner-form-box");
     partnerForm.innerHTML = html;
   }
-  helpSupport;
+
   /////////////////////work//////////////////////////////////////////////
 
   async renderWorkDescription(e) {
@@ -500,213 +578,6 @@ class App {
       .addEventListener("click", this.postWork.bind(this));
   }
 
-  /////////////////////ways//////////////////////////////////////////////
-  renderWaysDescription(e) {
-    if (this.selectedElement) {
-      this.selectedElement.classList.remove("active-item");
-      this.selectedElement.classList.remove("active-item-2");
-    }
-    this.selectedElement = e.currentTarget;
-    const html = `  <div class="edit-hero">
-    <h2>Edit ways to help description</h2>
-    <form action="">
-       <label class="label" for="heading">Description heading</label>
-        <input id="heading" type="text" name="" class="input" required></input>
-        <label class="label"  for="description">Description</label>
-        <textarea  name="" id="description" required class="textarea"></textarea>
-        <button class="btn btn-fill">Change ways to help Description</button>
-    </form>
-  </div>`;
-    main.innerHTML = html;
-    this.selectedElement.classList.add("active-item");
-  }
-
-  renderSupports(e) {
-    if (this.selectedElement) {
-      this.selectedElement.classList.remove("active-item");
-      this.selectedElement.classList.remove("active-item-2");
-    }
-    this.selectedElement = e.currentTarget;
-    const html = `
-    <div class="edit-card">
-    <h2> Edit-supports </h2>
-    <div class="grid grid-col-2">
-      <div  class="cards-list  grid grid-col-3">
-        <div class="card">
-          <img class="card-img" src="https://merwan-j.github.io/esk/images/black%20hands%20for%20water.jpg" width="200px"srcset="">
-          <div class="card-text">
-            <h3 class="card-title">dolor sit</h3>
-             <p class="card-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore repellat distinctio iste nisi assumenda alias in! Beatae aliquid .</p>
-          </div>
-        </div>
-        <div class="card">
-          <img class="card-img" src="https://merwan-j.github.io/esk/images/girl%20image%20for%20hero.jpg" width="200px"srcset="">
-          <div class="card-text">
-            <h3 class="card-title">ipsum dolor </h3>
-             <p class="card-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore repellat distinctio iste nisi assumenda alias in! Beatae aliquid .</p>
-          </div> 
-        </div>
-      
-        
-      </div>
-      <div  class="card-form-box" >
-      <div class="form-card card-form">
-        <h2 class="card-heading">Add support</h2>
-      <form action="">
-        <label class="label" for="heading">Support title</label>
-        <input id="heading" type="text" name="" class="input" required></input>
-         <label class="label"  for="imageLink">Support image link</label>
-         <input id="imageLink" type="text" name="" class="input" required></input>
-         <label class="label"  for="description">Support Description</label>
-         <textarea  name="" id="description" required class="textarea"></textarea>
-         <button class="btn btn-fill">Add</button>
-     </form>
-    </div>
-    </div>
-    </div>
-    
-  </div>`;
-    main.innerHTML = html;
-    this.selectedElement.classList.add("active-item");
-    document
-      .querySelector(".cards-list")
-      .addEventListener("click", this.rendersupport.bind(this));
-  }
-  rendersupport(e) {
-    if (e.target.closest(".card")) {
-      const card = this.renderCard(e);
-      const html = ` <div class="form-card card-form">
-         <div class="top-box"> <h2 class="card-heading">Delate or Edit Support</h2>
-         <button class="btn btn-fill btn-add">Add</button></div>
-
-      <form action="">
-        <label class="label" for="heading">Support title</label>
-        <input id="heading" type="text" name="" value = "${card.cardTitle}" class="input" required></input>
-         <label class="label"  for="imageLink">Support image link </label>
-         <input id="imageLink" type="text" name="" value = "${card.cardImageLink}" class="input" required></input>
-         <label class="label"  for="description">Support Description</label>
-             <textarea  name="" id="description"  class="textarea"  required>${card.cardDescription}</textarea>
-         <button class="btn btn-fill">Edit</button>   <button class="btn btn-fill" style="background-color:orangeRed">Delete</button>
-     </form>
-    </div>`;
-      card.cardForm.innerHTML = html;
-      document
-        .querySelector(".btn-add")
-        .addEventListener("click", this.addSupport.bind(this));
-    }
-  }
-
-  addSupport() {
-    const html = `<div class="form-card card-form">
-    <h2 class="card-heading">Add support</h2>
-  <form action="">
-    <label class="label" for="heading">Support title</label>
-    <input id="heading" type="text" name="" class="input" required></input>
-     <label class="label"  for="imageLink">Support image link</label>
-     <input id="imageLink" type="text" name="" class="input" required></input>
-     <label class="label"  for="description">Support Description</label>
-     <textarea  name="" id="description" required class="textarea"></textarea>
-     <button class="btn btn-fill">Add</button>
- </form>
-</div>`;
-    const cardForm = document.querySelector(".card-form-box");
-    cardForm.innerHTML = html;
-  }
-
-  //////////////////  get involved   /////////////////////////////
-
-  renderGetInvolveds(e) {
-    if (this.selectedElement) {
-      this.selectedElement.classList.remove("active-item");
-      this.selectedElement.classList.remove("active-item-2");
-    }
-    this.selectedElement = e.currentTarget;
-    const html = ` <div class="edit-card">
-    <h2> Edit get involved </h2>
-    <div class="grid grid-col-2">
-      <div  class="cards-list  grid grid-col-3">
-        <div class="card">
-          <img class="card-img" src="https://merwan-j.github.io/esk/images/old%20people%20hand.jpg" width="200px"srcset="">
-          <div class="card-text">
-            <h3 class="card-title">dolor sit</h3>
-             <p class="card-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore repellat distinctio iste nisi assumenda alias in! Beatae aliquid .</p>
-          </div>
-        </div>
-        <div class="card">
-          <img class="card-img" src="https://merwan-j.github.io/esk/images/kid%20getting%20reated.jpg" width="200px"srcset="">
-          <div class="card-text">
-            <h3 class="card-title">ipsum dolor </h3>
-             <p class="card-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore repellat distinctio iste nisi assumenda alias in! Beatae aliquid .</p>
-          </div> 
-        </div>
-      </div>
-      <div  class="card-form-box" >
-      <div class="form-card card-form">
-        <h2 class="card-heading">Add get Involved</h2>
-      <form action="">
-        <label class="label" for="heading">Get Involved title</label>
-        <input id="heading" type="text" name="" class="input" required></input>
-         <label class="label"  for="imageLink">Get Involved image link</label>
-         <input id="imageLink" type="text" name="" class="input" required></input>
-         <label class="label"  for="description">Get Involved Description</label>
-         <textarea  name="" id="description" required class="textarea"></textarea>
-         <button class="btn btn-fill">Add</button>
-     </form>
-    </div>
-    </div>
-    </div>
-  </div>`;
-
-    main.innerHTML = html;
-    this.selectedElement.classList.add("active-item");
-    document
-      .querySelector(".cards-list")
-      .addEventListener("click", this.renderInvolved.bind(this));
-  }
-
-  renderInvolved(e) {
-    if (e.target.closest(".card")) {
-      const card = this.renderCard(e);
-      const html = ` <div class="form-card card-form">
-         <div class="top-box"> <h2 class="card-heading">Delate or Edit involved</h2>
-         <button class="btn btn-fill btn-add">Add</button></div>
-
-      <form action="">
-        <label class="label" for="heading">Get involved name</label>
-        <input id="heading" type="text" name="" value = "${card.cardTitle}" class="input" required></input>
-         <label class="label"  for="imageLink">Get involved image link </label>
-         <input id="imageLink" type="text" name="" value = "${card.cardImageLink}" class="input" required></input>
-         <label class="label"  for="description">Get involved Description</label>
-             <textarea  name="" id="description"  class="textarea"  required>${card.cardDescription}</textarea>
-         <button class="btn btn-fill">Edit</button>   <button class="btn btn-fill" style="background-color:orangeRed">Delete</button>
-     </form>
-    </div>`;
-      card.cardForm.innerHTML = html;
-      document
-        .querySelector(".btn-add")
-        .addEventListener("click", this.addGetInvolved.bind(this));
-    }
-  }
-
-  addGetInvolved() {
-    const html = `<div class="form-card card-form">
-    <h2 class="card-heading">Add Get involved</h2>
-  <form action="">
-    <label class="label" for="heading">Get involved  title</label>
-    <input id="heading" type="text" name="" class="input" required></input>
-     <label class="label"  for="imageLink">Get involved image link</label>
-     <input id="imageLink" type="text" name="" class="input" required></input>
-     <label class="label"  for="description">Get involved Description</label>
-     <textarea  name="" id="description" required class="textarea"></textarea>
-     <button class="btn btn-fill">Add</button>
- </form>
-</div>`;
-    const cardForm = document.querySelector(".card-form-box");
-    cardForm.innerHTML = html;
-  }
-
-  //////////////////  message   /////////////////////////////
-
   async rendermessages(e) {
     console.log("ok");
     if (this.selectedElement) {
@@ -732,7 +603,6 @@ class App {
       </p>
   </div>`;
     });
-
     const html = ` <div class="messages-box">
     <h2> Messages </h2>
     <div class="messages grid grid-col-2-equal">${messageHtml}</div>
@@ -742,172 +612,119 @@ class App {
     this.selectedElement.classList.add("active-item-2");
   }
 
-  //////////////////  testimonials   /////////////////////////////
-
-  renderTestimonials(e) {
+  async renderUser(e) {
     if (this.selectedElement) {
       this.selectedElement.classList.remove("active-item-2");
       this.selectedElement.classList.remove("active-item");
     }
     this.selectedElement = e.currentTarget;
-    const html = ` <div class="edit-card testimonials">
-    <h2> Edit get involved </h2>
-    <div class="grid grid-col-2">
-      <div  class="cards-list  grid grid-col-3">
-        <div class="card">
-          <img class="card-img" src="https://merwan-j.github.io/esk/images/ustaz%20abuki.jpg" width="200px"srcset="">
-          <div class="card-text">
-            <h3 class="card-title">dolor sit</h3>
-             <p class="card-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore repellat distinctio iste nisi assumenda alias in! Beatae aliquid .</p>
-          </div>
-          <audio class="audio" controls src="https://merwan-j.github.io/esk/audios/audio-placeholder.webm"></audio>
-        </div>
-        <div class="card">
-          <img class="card-img" src="https://merwan-j.github.io/esk/images/Abiy-Ahmed-Israel-Visit.jpg" width="200px"srcset="">
-          <div class="card-text">
-            <h3 class="card-title">ipsum dolor </h3>
-             <p class="card-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore repellat distinctio iste nisi assumenda alias in! Beatae aliquid .</p>
-          </div>
-          <audio class="audio" controls src="https://merwan-j.github.io/esk/audios/audio-placeholder.webm"></audio>
-        </div>
-        <div class="card">
-          <img class="card-img" src="https://merwan-j.github.io/esk/images/solomon%20kassa.jpg" width="200px"srcset="">
-          <div class="card-text">
-            <h3 class="card-title">ipsum dolor </h3>
-             <p class="card-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore repellat distinctio iste nisi assumenda alias in! Beatae aliquid .</p>
-          </div> 
-          <audio class="audio" controls src="https://merwan-j.github.io/esk/audios/audio-placeholder.webm"></audio>
-        </div>
-      </div>
-      <div  class="card-form-box" >
-      <div class="form-card card-form">
-        <h2 class="card-heading">Add Testimonial</h2>
-      <form action="">
-        <label class="label" for="heading">Testimonial name</label>
-        <input id="heading" type="text" name="" class="input" required></input>
-         <label class="label"  for="imageLink">Testimonial image link</label>
-         <input id="imageLink" type="text" name="" class="input" required></input>
-         <label class="label"  for="audioLink">Testimonial audio link</label>
-         <input id="audioLink" type="text" name="" class="input" required></input>
-         <label class="label"  for="description">Testimonial Description</label>
-         <textarea  name="" id="description" required class="textarea"></textarea>
-         <button class="btn btn-fill">Add</button>
-     </form>
-    </div>
-    </div>
-    </div>
-  </div>
- `;
-    main.innerHTML = html;
+    this.renderUserForm_help();
     this.selectedElement.classList.add("active-item-2");
-    document
-      .querySelector(".cards-list")
-      .addEventListener("click", this.renderTestimonial.bind(this));
   }
+  async renderUserForm_help() {
+    let usersApprovedData;
+    let usersPendingData;
 
-  renderTestimonial(e) {
-    if (e.target.closest(".card")) {
-      const card = this.renderCard(e);
-      const audioLink = e.target.closest(".card").querySelector(".audio").src;
-
-      const html = ` <div class="form-card card-form">
-         <div class="top-box"> <h2 class="card-heading">Edit Testimonial</h2>
-         <button class="btn btn-fill btn-add">Add</button></div>
-
-      <form action="">
-        <label class="label" for="heading">Testimonial name</label>
-        <input id="heading" type="text" name="" value = "${card.cardTitle}" class="input" required></input>
-         <label class="label"  for="imageLink">Testimonial image link </label>
-         <input id="imageLink" type="text" name="" value = "${card.cardImageLink}" class="input" required></input>
-         <label class="label"  for="audioLink">Testimonial audio link </label>
-         <input id="audioLink" type="text" name="" value = "${audioLink}" class="input" required></input>
-         <label class="label"  for="description">Testimonial Description</label>
-             <textarea  name="" id="description"  class="textarea"  required>${card.cardDescription}</textarea>
-         <button class="btn btn-fill">Edit</button>   <button class="btn btn-fill" style="background-color:orangeRed">Delete</button>
-     </form>
-    </div>`;
-      card.cardForm.innerHTML = html;
-      document
-        .querySelector(".btn-add")
-        .addEventListener("click", this.addTestimonial.bind(this));
+    try {
+      usersPendingData = await fetch(
+        "http://localhost:3000/api/users/status/pending"
+      );
+      usersApprovedData = await fetch(
+        "http://localhost:3000/api/users/status/approved"
+      );
+    } catch (error) {
+      console.log(error);
     }
-  }
+    let userhtmlApproved = "";
 
-  addTestimonial() {
-    const html = `<div class="form-card card-form">
-    <h2 class="card-heading">Add Testimonial</h2>
-  <form action="">
-    <label class="label" for="heading">Testimonial name</label>
-    <input id="heading" type="text" name="" class="input" required></input>
-     <label class="label"  for="imageLink">Testimonial image link</label>
-     <input id="imageLink" type="text" name="" class="input" required></input>
-     <label class="label"  for="audioLink">Testimonial audio link</label>
-     <input id="audioLink" type="text" name="" class="input" required></input>
-     <label class="label"  for="description">Testimonial Description</label>
-     <textarea  name="" id="description" required class="textarea"></textarea>
-     <button class="btn btn-fill">Add</button>
- </form>
-</div>`;
-    const cardForm = document.querySelector(".card-form-box");
-    cardForm.innerHTML = html;
-  }
+    if (usersApprovedData) {
+      const usersApproved = await usersApprovedData.json();
 
-  renderUser(e) {
-    if (this.selectedElement) {
-      this.selectedElement.classList.remove("active-item-2");
-      this.selectedElement.classList.remove("active-item");
+      usersApproved.forEach((user) => {
+        userhtmlApproved += ` <tr data-id= "${user._id}">
+            <td class="username">${user.userName}</td>
+            <td class="email">${user.name}</td>
+            <td class="status">APPROVED</td>
+            </tr>
+           `;
+      });
+    } else {
+      userhtmlApproved = `
+       <tr data-id= "...">
+            <td class="username">...</td>
+            <td class="email">...</td>
+            <td class="status">...</td>
+            </tr>
+           ;
+      `;
     }
-    this.selectedElement = e.currentTarget;
+
+    let userhtmlPending = "";
+    if (usersPendingData) {
+      const usersPending = await usersPendingData.json();
+
+      usersPending.forEach((user) => {
+        userhtmlPending += ` <tr data-id= "${user._id}">
+            <td class="username">${user.userName}</td>
+            <td class="email">${user.name}</td>
+            <td class="status">PENDING</td>
+            </tr>
+           `;
+      });
+    } else {
+      userhtmlPending = `
+       <tr data-id= "...">
+            <td class="username">...</td>
+            <td class="email">...</td>
+            <td class="status">...</td>
+            </tr>
+           ;
+      `;
+    }
     const html = ` <div class="messages-box">
-    <h2> Messages </h2>
-    <div class="users-box grid grid-col-2-equal">
-      <table class="users-table">
-          <thead>
-          <th class=""> Username</th>
-          <th class="">Email</th>
-          <th class="">password</th>
-          <th class="">status</th>
-          </thead>
-            <tbody>
-              <tr>
-              <td class="username"> natty</td>
-              <td class="email">natnael70a@gmail.com</td>
-              <td class="password">dfdfdr34</td>
-              <td class="status">PENDDING</td>
-              </tr>
-                <tr>
-                <td class="username"> bell</td>
-                <td class="email">natty50@gmail.com</td>
-                <td class="password">3e34edfdvv</td>
-                <td class="status">REJECTED</td>
-                </tr>
-               
-                <tr>
-                  <td class="username"> goog</td>
-                  <td class="email">googboog@gmail.com</td>
-                  <td class="password">psdsdd344</td>
-                  <td class="status">APPROVED</td>
-                  </tr>
-            </tbody>
- 
-          </table>
-
-          <div class="userform">
-
+      <h2> Messages </h2>
+      <div class="users-box grid grid-col-3">
+        <table class="users-table-1">
+            <thead>
+            <th class=""> Username</th>
+            <th class="">Email</th>
+            <th class="">status</th>
+            </thead>
+              <tbody>
+               ${userhtmlPending}
+              </tbody>
+            </table>
+          
+            <table class="users-table-2">
+            <thead>
+            <th class=""> Username</th>
+            <th class="">Email</th>
+            <th class="">status</th>
+            </thead>
+              <tbody>
+               ${userhtmlApproved}
+              </tbody>
+            </table>
+  
+            <div class="userform">
+  
+            </div>
           </div>
-        </div>
-      </div> `;
+        </div> `;
 
     main.innerHTML = html;
-    this.selectedElement.classList.add("active-item-2");
     document
-      .querySelector(".users-table")
+      .querySelector(".users-table-1")
+      .addEventListener("click", this.renderUserForm.bind(this));
+
+    document
+      .querySelector(".users-table-2")
       .addEventListener("click", this.renderUserForm.bind(this));
   }
-
   renderUserForm(e) {
     if (e.target.closest("tbody")) {
       console.log("ok");
+      const id = e.target.closest("tr").dataset.id;
       const username = e.target
         .closest("tr")
         .querySelector(".username").textContent;
@@ -915,7 +732,9 @@ class App {
       const html = `
       <div class="form-card">
       <h2 class="card-heading">Edit status</h2>
-       <form action="">
+
+       <form class="user-form" data-id="${id}">
+
        <label class="label" for="name">name:</label>
     <input id="name" type="text" name="" value="${username}" class="input-user" disabled ></input> </br>
      <label class="label"  for="email">Email:</label>
@@ -924,18 +743,47 @@ class App {
        <label class="label" for="status">Status:</label>
        <select class="select" name="" id="status">
        <option value="">Select Status</option>
-        <option value="Pendding">Pendding</option>
-        <option value="Approved">Approved</option>
-        <option value="Rejected">Rejected</option>
+        <option value="Approve">Approve</option>
+        <option value="Reject">Reject</option>
        </select>
-      
-       <button class="btn btn-fill status-change">Change</button>  
+
+       <button class="btn btn-fill status-change-btn">Change</button>  
+
    </form>
    </div>
    `;
-
       document.querySelector(".userform").innerHTML = html;
+
+      document
+        .querySelector(".status-change-btn")
+        .addEventListener("click", this.changeStaus.bind(this));
     }
+  }
+  async changeStaus(e) {
+    e.preventDefault();
+    console.log("change");
+    const id = e.target.closest(".user-form").dataset.id;
+    const option = document.querySelector(".select").value;
+    let method;
+    if (!option) {
+      return;
+    }
+
+    if (option == "Approve") {
+      method = "PATCH";
+    } else {
+      method = "DELETE";
+    }
+
+    const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+      method: `${method}`,
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(),
+    });
+    this.renderUserForm_help();
   }
 }
 const app = new App();
