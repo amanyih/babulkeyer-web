@@ -20,18 +20,17 @@ export class CardService {
   }
 
   async getCardByPage(page: string): Promise<ICard[]> {
-    let cardData;
+    let cardData: ICard[];
 
     try {
       cardData = await this.CardModel.find({ page: page });
-
-      if (!cardData || cardData.length == 0) {
-        throw new NotFoundException('Card Data Not Found!');
-      }
-      return cardData;
     } catch (err) {
       throw err;
     }
+    if (!cardData || cardData.length == 0) {
+      throw new NotFoundException('Card Data Not Found!');
+    }
+    return cardData;
   }
 
   async getCardById(id: string): Promise<ICard> {
@@ -78,10 +77,12 @@ export class CardService {
   }
 
   async createCard(createCardDto: CreateCardDto): Promise<ICard> {
+    console.log('in the service');
     try {
       const cardData = await this.CardModel.create(createCardDto);
       return cardData;
     } catch (err) {
+      console.log(createCardDto, 'the data');
       throw err;
     }
   }

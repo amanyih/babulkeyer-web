@@ -11,7 +11,7 @@ import {
 import { CardService } from 'src/card-content/services/card/card.service';
 import { CreateCardDto } from 'src/card-content/dtos/create-card.dto';
 import { UpdateCardDto } from 'src/card-content/dtos/update-card.dto';
-import { Put } from '@nestjs/common/decorators';
+import { Patch, Put } from '@nestjs/common/decorators';
 @Controller('card')
 export class CardController {
   constructor(private readonly cardService: CardService) {}
@@ -34,6 +34,7 @@ export class CardController {
 
   @Post()
   async createCard(@Body() createCardDto: CreateCardDto) {
+    console.log('in the controller');
     return await this.cardService.createCard(createCardDto);
   }
 
@@ -42,7 +43,7 @@ export class CardController {
     return await this.cardService.deleteCard(id);
   }
 
-  @Put('/:id')
+  @Patch('/:id')
   async updateCard(
     @Param('id') id: string,
     @Body() updateCardDto: UpdateCardDto,

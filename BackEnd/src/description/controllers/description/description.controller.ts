@@ -1,5 +1,13 @@
 import { Controller } from '@nestjs/common';
-import { Get, Post, Delete, Param, Body, Put } from '@nestjs/common/decorators';
+import {
+  Get,
+  Post,
+  Delete,
+  Param,
+  Body,
+  Put,
+  Patch,
+} from '@nestjs/common/decorators';
 import { CreateDescriptionDto } from 'src/description/dtos/create-description.dto';
 import { UpdateDescriptionDto } from 'src/description/dtos/update-description.dto';
 import { DescriptionService } from 'src/description/services/description/description.service';
@@ -28,7 +36,7 @@ export class DescriptionController {
     return await this.descriptionService.create(createData);
   }
 
-  @Put('/:id')
+  @Patch('/:id')
   async update(
     @Body() updateData: UpdateDescriptionDto,
     @Param('id') id: string,

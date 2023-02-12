@@ -8,6 +8,7 @@ import { DescriptionModule } from './description/description.module';
 import { PartnersModule } from './partners/partners.module';
 import { UsersModule } from './users/users.module';
 import { MessagesModule } from './messages/messages.module';
+import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/services/auth/auth.service';
 import { AuthController } from './auth/controllers/auth/auth.controller';
@@ -26,6 +27,11 @@ import { ImageUploadModule } from './image-upload/image-upload.module';
     DescriptionModule,
     PartnersModule,
     UsersModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [],
+    }),
+
     CardContentModule,
     AuthModule,
     ImageUploadModule,

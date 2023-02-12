@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Put,
+  Patch,
   Param,
   Delete,
 } from '@nestjs/common';
@@ -25,7 +25,7 @@ export class PartnersController {
   findAll() {
     return this.partnersService.findAll();
   }
-  @Put(':id')
+  @Patch(':id')
   update(@Param('id') id: string, @Body() updatePartnerDto: UpdatePartnerDto) {
     return this.partnersService.update(id, updatePartnerDto);
   }
