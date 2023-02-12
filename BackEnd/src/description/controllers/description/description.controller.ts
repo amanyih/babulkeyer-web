@@ -7,7 +7,9 @@ import {
   Body,
   Put,
   Patch,
+  UseGuards,
 } from '@nestjs/common/decorators';
+import { AuthGuard } from '@nestjs/passport';
 import { CreateDescriptionDto } from 'src/description/dtos/create-description.dto';
 import { UpdateDescriptionDto } from 'src/description/dtos/update-description.dto';
 import { DescriptionService } from 'src/description/services/description/description.service';
@@ -30,12 +32,12 @@ export class DescriptionController {
   async getByPage(@Param('page') page: string) {
     return await this.descriptionService.getByPage(page);
   }
-
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   async create(@Body() createData: CreateDescriptionDto) {
     return await this.descriptionService.create(createData);
   }
-
+  @UseGuards(AuthGuard('jwt'))
   @Patch('/:id')
   async update(
     @Body() updateData: UpdateDescriptionDto,
@@ -43,7 +45,7 @@ export class DescriptionController {
   ) {
     return await this.descriptionService.update(id, updateData);
   }
-
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/:id')
   async delete(@Param('id') id: string) {
     return await this.descriptionService.delete(id);
