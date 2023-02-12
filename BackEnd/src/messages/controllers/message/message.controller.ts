@@ -1,10 +1,19 @@
-import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Body,
+  Param,
+  Redirect,
+} from '@nestjs/common';
 import { MessageDto } from 'src/messages/dtos/message.dto';
 import { MessageService } from 'src/messages/services/message/message.service';
 
 @Controller('message')
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}
+  @Redirect('http://127.0.0.1:5502/contact.html', 301)
   @Post()
   async addMessage(@Body() messageDto: MessageDto) {
     return await this.messageService.addMessage(messageDto);
