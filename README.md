@@ -1,15 +1,4 @@
 # Babul Keyer
-
-Group Members
-
-[Amanuel Yihune  - UGR/8408/13 - Sec 1](https://github.com/amanyih) <br/>
-[Elisur Freyesus - UGR/8806/13 - Sec 4](https://github.com/elizura) <br/>
-[Merwan Juneydi  - UGR/0816/13 - Sec 2](https://github.com/Merwan-J) <br/>
-[Natnael Abebaw  - UGR/7747/13 - Sec 1](https://github.com/natttygoog) <br/>
-[Rahel Solomon   - UGR/9946/13 - Sec 3](https://github.com/ritasol) <br/>
-
-
-
 # BABULKEYER
 
 This repository contains code for babul keyer admin dashboard and babul keyer website built with bootstrap. The dashboard uses JWT token-based authentication to secure access to access of the site. Both sites consume the REST API using the Fetch API.
